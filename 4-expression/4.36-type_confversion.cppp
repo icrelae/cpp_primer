@@ -1,0 +1,17 @@
+/* 2016.09.27 23:18
+ * P_147
+ */
+#include <iostream>
+
+int main(int argc, char **argv)
+{
+	int i = 3;
+	double d = 2.5;
+
+
+	std::cout << i * d << std::endl;			// 7.5
+	std::cout << i * static_cast<int>(d) << std::endl;	// 6
+
+	return 0;
+}
+
