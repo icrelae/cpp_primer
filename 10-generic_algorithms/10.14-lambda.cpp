@@ -26,7 +26,8 @@ void LambdaEG()
 	vector<string> vecStr({"abc", "ab", "b"});
 	stable_sort(vecStr.begin(), vecStr.end(), 
 			[] (string const &strA, string const &strB) {
-		return strA.size() < strB.size();});
+				return strA.size() < strB.size();
+			});
 	for (auto const str : vecStr)
 		cout << str << ' ';
 	cout << endl;
@@ -39,7 +40,8 @@ void LambdaEG()
 	 */
 	auto itStr = find_if(vecStr.begin(), vecStr.end(), 
 			[uintSize] (string const &str) -> bool {
-		return (str.size() >= uintSize);});
+				return (str.size() >= uintSize);
+			});
 	cout << *itStr << endl;
 	// output: ab
 
@@ -51,7 +53,8 @@ void LambdaEG()
 	// capture list;
 	for_each(itStr, vecStr.end(), 
 			[] (string const &str) {
-			cout << str << ' ';});
+				cout << str << ' ';
+			});
 	cout << endl;
 	// output: ab abc 
 }

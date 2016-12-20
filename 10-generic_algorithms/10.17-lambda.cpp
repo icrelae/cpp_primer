@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 			Sales_data("cca"), Sales_data("cbd")});
 	sort(vecSalesData.begin(), vecSalesData.end(),
 			[] (Sales_data const &a, Sales_data const &b) -> bool {
-			return a.bookNo < b.bookNo;
+				return a.bookNo < b.bookNo;
 			});
 	for (auto const SalesData : vecSalesData)
 		cout << SalesData.bookNo << ' ';

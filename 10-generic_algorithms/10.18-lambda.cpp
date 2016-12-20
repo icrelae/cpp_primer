@@ -19,15 +19,15 @@ void Biggies(vector<string> &words, vector<string>::size_type sz)
 {
 	stable_sort(words.begin(), words.end(),
 			[] (string const &strA, string const &strB) -> bool {
-			return strA.size() < strB.size();
+				return strA.size() < strB.size();
 			});
 	auto itWords = partition(words.begin(), words.end(),
 			[sz] (string const &str) -> bool {
-			return str.size() > sz;
+				return str.size() > sz;
 			});
 	for_each(words.begin(), itWords,
 			[] (string const &str) {
-			cout << str << ' ';
+				cout << str << ' ';
 			});
 }
 

@@ -1,4 +1,5 @@
 /* 2016.12.20 21:37
+ * P_357
  * bind(), ref(), cref(): !!!
  * head file: <functionl>
  * auto newCallable = bind(callable, arglist);
