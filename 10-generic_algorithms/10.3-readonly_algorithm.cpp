@@ -5,6 +5,7 @@
  * find(beg, end, val)
  * count(beg, end, val)
  * accumulate(beg, end, val):
+ *	head file: <numeric>
  *	get sum from beg to end, val is initialized value of sum
  *	elements should be addable
  *	type of val determine which types operator will be used
