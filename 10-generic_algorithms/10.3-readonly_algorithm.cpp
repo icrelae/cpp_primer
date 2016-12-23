@@ -2,7 +2,8 @@
  * P_339
  * !!!
  * read-only algorithms: !!!
- * find(beg, end, val)
+ * find(beg, end, val):
+ *	return 'end' if not found
  * count(beg, end, val)
  * accumulate(beg, end, val):
  *	head file: <numeric>
