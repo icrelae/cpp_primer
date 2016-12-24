@@ -1,6 +1,6 @@
 /* 2016.08.28 16:08
  * decltype(expr):
- * 1.infer type of expr by compiler when compileing, never calculate expr realy.
+ * 1.infer type of expr by compiler when compileing, never calculate expr actually
  * 2.when expr is like "(xxx)" means decltype((xxx)), the type will always be
  * an alias because (xxx) will be treated as an expression of a variable that
  * returns an alias, but xxx will be treated as a value.
