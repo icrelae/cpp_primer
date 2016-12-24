@@ -1,7 +1,10 @@
 /* 2016.12.13 20:53
  * P_342
  * !!!
- * back_inserter: head file <iterator>
+ * back_inserter: !!!
+ *	head file <iterator>
+ * replace(itBeg, itEnd, target, replacement): !!!
+ *	replace 'target' with 'replacement'
  */
 #include <iostream>
 #include <string>

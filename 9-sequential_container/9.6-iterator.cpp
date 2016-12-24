@@ -2,14 +2,14 @@
  * P_297
  * !!!
  * operator unavailable for list, forward_list: !!!
- * iter + n, iter - n
- * iter += n, iter -= n
- * iter1 - iter2
- * >, >=, <, <=
+ *	iter + n, iter - n
+ * 	iter += n, iter -= n
+ * 	iter1 - iter2
+ * 	>, >=, <, <=
  * operator unavailable for forward_list: !!!
- * --iter
+ *	--iter
  * operator available for all(vector, deque, list, forward_list, array, string) !!!
- * *iter, iter->member, ++iter, iter1 == iter2, iter1 != iter2
+ *	*iter, iter->member, ++iter, iter1 == iter2, iter1 != iter2
  */
 #include <iostream>
 #include <string>
