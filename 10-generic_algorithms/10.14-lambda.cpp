@@ -45,7 +45,7 @@ void LambdaEG()
 	cout << *itStr << endl;
 	// output: ab
 
-	// for_each(itBeg, itEnd, customCompare) !!!
+	// for_each(itBeg, itEnd, func) !!!
 	// heres lambda using a uncaptured name: cout; !!!
 	// due to 'cout' is declared upper layer of LambdaEG()
 	// so its not necessary put 'cout' into capture list;
