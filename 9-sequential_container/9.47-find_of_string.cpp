@@ -15,6 +15,8 @@
  * cp, pos: find content of char pointer from pos which default is 0
  * cp, pos, n: find first n characters of content of cp from pos,
  *	pos and n have no default value
+ * return:
+ * string::size_type or string::npos
  */
 #include <iostream>
 #include <string>
