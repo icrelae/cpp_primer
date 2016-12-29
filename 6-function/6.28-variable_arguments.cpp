@@ -9,9 +9,10 @@ using namespace std;
 
 void error_msg(int e, initializer_list<string> sList)
 {
-	// type of elem is string?
+	// type of elem is string const?
 	for (const auto &elem : sList)
 		cout << elem << ' ';
+
 }
 
 int main(int argc, char **argv)

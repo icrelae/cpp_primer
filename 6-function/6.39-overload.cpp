@@ -8,12 +8,12 @@
 
 using namespace std;
 
-// a: redefinition
-void calc(int a, int b)
+// a: redefinition, can't tell top-level const
+void calc(int a)
 {
 	cout << "not const" << endl;
 }
-void calc(const int a, const int b)
+void calc(int const a)
 {
 	cout << "const" << endl;
 }
@@ -28,8 +28,8 @@ double *reset(double *);
 
 /* eg */
 // invalid: overloaded function can't tell top-level const!!!
-void lookup(int);
-void lookup(const int);
+void lookup(int *);
+void lookup(int * const);
 // valid
 void lookup(int &);
 void lookup(const int &);

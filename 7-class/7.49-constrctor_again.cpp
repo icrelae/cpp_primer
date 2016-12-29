@@ -1,6 +1,10 @@
 /* 2016.10.30 16:51
  * P_266
  * !!!
+ * using 'explicit' to avoid initialize implicitly in any form !!!
+ * 'explicit' is effective only for single argument instruction(multi arguments 
+ * instruction cannot initialize implicitly so they don't need to be 'explicit');
+ * 'explicit' should be used in class declaration, defination out of class shouldn't repeat;
  */
 #include <iostream>
 #include <string>
@@ -21,6 +25,7 @@ class Sales_data
 				unsigned int units_sold, 
 				double revenue);
 		Sales_data &combine(const Sales_data &rhs);
+		explicit Sales_data(Sales_data const &d) { }
 		istream& read(istream &in);
 		ostream& print(ostream &out);
 		string isbn() const;
@@ -65,6 +70,15 @@ inline double Sales_data::avg_price()
 {
 	return (revenue / units_sold);
 }
+
+void ExplicitEG()
+{
+	Sales_data a;
+	// Sales_data(Sales_data const &) is explicit
+	Sales_data b(a);	// valid
+	Sales_data c = a;	// invalid, this is implicitly transform
+}
+
 int main(int argc, char **argv)
 {
 	/* invalid, forbid two step inmplicitly cast!!! */

@@ -1,6 +1,14 @@
 /* 2016.10.15 10:19
  * P_199
  * !!!
+ * initializer_list: !!!
+ * if number of arguments is unsure and types of arguments are same, using initializer_list
+ * operations of initializer_list:
+ *	initializer_list<T> lst
+ *	initializer_list<T> lst{}
+ *	lst2(lst):
+ *	lst2 = lst: copy list but elements, they are sharing elements
+ *	lst.size(), lst.begin(), lst.end()
  */
 #include <iostream>
 #include <string>
