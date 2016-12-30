@@ -1,6 +1,6 @@
-/* 2016.12.29 08:35
- * P_407
- * ???
+/* 2016.12.30 11:40
+ * P_422
+ * former, one line, one job
  */
 #include <iostream>
 #include <string>
@@ -8,6 +8,8 @@
 #include <memory>
 
 using namespace std;
+
+class StrBlobPtr;
 
 class StrBlob {
 	public:
@@ -17,14 +19,16 @@ class StrBlob {
 		bool empty() const {return data->empty();}
 		size_type size() const {return data->size();}
 		void push_back(string const &str) { data->push_back(str);}
-		void push_back(string const &str) const { data->push_back(str);}
 		void pop_back();
 		void pop_back() const;
 		string& front();
 		string& back();
 		string const & front() const;
 		string const & back() const;
+		StrBlobPtr begin();
+		StrBlobPtr end();
 	private:
+		friend class StrBlobPtr;
 		shared_ptr<vector<string>> data;
 		void Check(size_type i, string const &msg) const;
 };
@@ -70,8 +74,51 @@ string const & StrBlob::back() const
 	return const_cast<string const &>(data->back());
 }
 
+class StrBlobPtr {
+	public:
+		StrBlobPtr(): curr(0) { }
+		StrBlobPtr(StrBlob &a, size_t sz = 0):
+			wptr(a.data), curr(sz) { }
+		string & Deref() const;
+		StrBlobPtr & Incr();
+	private:
+		shared_ptr<vector<string>> Check(size_t, string const &) const;
+		weak_ptr<vector<string>> wptr;
+		size_t curr;
+};
+shared_ptr<vector<string>> StrBlobPtr::Check(size_t i, string const &msg) const
+{
+	auto sptr = wptr.lock();
+	if (sptr == NULL)
+		throw runtime_error("unbound StrBlobPtr");;
+	if (i >= sptr->size())
+		throw out_of_range(msg);
+	return sptr;
+}
+string & StrBlobPtr::Deref() const
+{
+	auto sptr = Check(curr, "Dereference of StrBlobPtr");
+	return sptr->at(curr);
+}
+StrBlobPtr & StrBlobPtr::Incr()
+{
+	Check(curr, "increment past end of StrBlobPtr");
+	++curr;
+	return *this;
+}
+
+StrBlobPtr StrBlob::begin()
+{
+	return StrBlobPtr(*this);
+}
+StrBlobPtr StrBlob::end()
+{
+	return StrBlobPtr(*this, data->size());
+}
+
 int main(int argc, char **argv)
 {
+
 
 	return 0;
 }

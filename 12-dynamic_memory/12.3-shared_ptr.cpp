@@ -31,8 +31,12 @@ class StrBlob {
 		shared_ptr<vector<string>> data;
 		void Check(size_type i, string const &msg) const;
 };
-StrBlob::StrBlob(): data(make_shared<vector<string>>()) {};
-StrBlob::StrBlob(initializer_list<string> il): data(make_shared<vector<string>>(il)) {};
+StrBlob::StrBlob(): data(make_shared<vector<string>>())
+{
+}
+StrBlob::StrBlob(initializer_list<string> il): data(make_shared<vector<string>>(il))
+{
+}
 void StrBlob::Check(size_type i, string const &msg) const
 {
 	if (i >= this->size())

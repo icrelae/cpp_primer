@@ -1,15 +1,5 @@
 /* 2016.12.29 19:06
  * P_417
- * !!!
- * regulation of smart pointer: !!!
- *	don't initialize several sptr using single common ptr
- *	never delete return value of sptr.get()
- *	never initialize or reset() a sptr using return value of sptr.get()
- *	remember that return value of sptr.get() will be invalid when last obj
- *		of it's corresponding sptr is destruct
- *	using deleter to manage some resource to avoid exception interrupt
- *		releaseing resource
- *
  */
 #include <iostream>
 #include <string>
