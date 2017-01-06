@@ -72,7 +72,6 @@ string const & StrBlob::back() const
 
 int main(int argc, char **argv)
 {
-	a.back();
 	StrBlob const b;
 
 	return 0;

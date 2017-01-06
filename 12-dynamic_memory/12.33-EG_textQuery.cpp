@@ -45,11 +45,26 @@ class QueryResult {
 		QueryResult(string s, shared_ptr<set<line_no>> p,
 				shared_ptr<vector<string>> f):
 			sought(s), lines(p), file(f) { }
+		set<line_no>::const_iterator begin();
+		set<line_no>::const_iterator end();
+		shared_ptr<vector<string>> get_file();
 	private:
 		string sought;
 		shared_ptr<set<line_no>> lines;
 		shared_ptr<vector<string>> file;
 };
+set<line_no>::const_iterator QueryResult::begin()
+{
+	return lines->begin();
+}
+set<line_no>::const_iterator QueryResult::end()
+{
+	return lines->end();
+}
+shared_ptr<vector<string>> QueryResult::get_file()
+{
+	return file;
+}
 QueryResult TextQuery::query(string const &sought) const
 {
 	static shared_ptr<set<line_no>> nodata(new set<line_no>);
