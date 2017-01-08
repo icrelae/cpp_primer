@@ -1,5 +1,8 @@
 /* 2017.01.07 21:01
- * P_444
+ * P_454
+ *
+ * memory leak
+ * multi delete
  */
 #include <iostream>
 #include <string>
@@ -21,18 +24,15 @@ class HasPtr {
 };
 HasPtr & HasPtr::operator =(HasPtr const &orig)
 {
+	string *pStr = new string(*orig.ps);
 	delete ps;
-	ps = new string(*orig.ps);
+	ps = pStr;
 	i = orig.i;
 	return *this;
 }
 
 int main(int argc, char **argv)
 {
-	HasPtr a("asd"), b;
-	b = a;
-	cout << *b.ps;
-	// output: asd
 
 	return 0;
 }

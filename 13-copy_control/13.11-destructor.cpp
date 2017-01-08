@@ -13,13 +13,13 @@ class HasPtr {
 			ps(new string(s)), i(0) { }
 		HasPtr(HasPtr const &orig):
 			ps(new string(*orig.ps)), i(orig.i) { }
-		HasPtr & operator =(HasPtr const orig);
+		HasPtr & operator =(HasPtr const &orig);
 		~HasPtr() { delete ps; ps = NULL;}
 	public:
 		string *ps;
 		int i;
 };
-HasPtr & HasPtr::operator =(HasPtr const orig)
+HasPtr & HasPtr::operator =(HasPtr const &orig)
 {
 	delete ps;
 	ps = new string(*orig.ps);

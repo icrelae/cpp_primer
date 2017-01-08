@@ -1,5 +1,5 @@
 /* 2017.01.07 21:01
- * P_444
+ * P_452
  */
 #include <iostream>
 #include <string>
@@ -19,7 +19,7 @@ class HasPtr {
 		string *ps;
 		int i;
 };
-HasPtr & HasPtr::operator =(HasPtr const &orig)
+HasPtr & HasPtr::operator=(HasPtr const &orig)
 {
 	delete ps;
 	ps = new string(*orig.ps);
@@ -29,10 +29,6 @@ HasPtr & HasPtr::operator =(HasPtr const &orig)
 
 int main(int argc, char **argv)
 {
-	HasPtr a("asd"), b;
-	b = a;
-	cout << *b.ps;
-	// output: asd
 
 	return 0;
 }
