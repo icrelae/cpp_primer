@@ -2,8 +2,7 @@
  * P_304
  * !!!
  * 1) assign only available for seq_container !!!
- * 2) useing swap(a, b) rather than a.swap(b), 
- *	because the former is more efficient in generic programming !!!
+ * 2) useing swap(a, b) rather than a.swap(b), there's only member-swap in earlier stl
  * 3) all iterator and pointer of a string will be invalidate by swap(0, 1) accoding the book,
  *	but actually they are not (g++ 6.2.1). it0 point to original site after swap(0, 1), now is 1.
  * 4) time of swapping array are proportional to its size as opposed to other seq-containers that cost constant time, 
