@@ -84,7 +84,7 @@ void swap(Message &ma, Message &mb)
 Message::Message(const string &s): content(s)
 {
 }
-Message::Message(const Message &m): content(m.content)
+Message::Message(const Message &m): content(m.content), folders(m.folders)
 {
 	add_to_folders(m);
 }
