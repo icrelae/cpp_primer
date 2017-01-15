@@ -38,6 +38,14 @@ int main(int argc, char **argv)
 	string str = "asdfg hjkl;";
 	istringstream iss(str);
 	Read(iss);
+	/* output:
+	 *	badbit: 0 eofbit: 0 failbit: 0 goodbit: 1 
+	 *	asdfg
+	 *	hjkl;
+	 *	badbit: 0 eofbit: 1 failbit: 1 goodbit: 0 
+	 *	badbit: 0 eofbit: 1 failbit: 0 goodbit: 0 
+	 *	badbit: 0 eofbit: 0 failbit: 0 goodbit: 1 
+	 */
 
 	return 0;
 }
