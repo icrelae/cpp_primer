@@ -1,8 +1,7 @@
-/* 2017.01.16 09:00
- * P_497
+/* 2017.01.18 09:01
+ * P_500
  * !!!
- * arithmetic operator and relational operator should be non-member generally !!!
- * arguments always be 'const T&' due to changing obj is not need !!![
+ * '=' and '+=' ... should be member !!!
  */
 #include <iostream>
 #include <sstream>

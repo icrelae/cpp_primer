@@ -1,8 +1,5 @@
-/* 2017.01.16 09:00
- * P_497
- * !!!
- * arithmetic operator and relational operator should be non-member generally !!!
- * arguments always be 'const T&' due to changing obj is not need !!![
+/* 2017.01.18 09:01
+ * P_500
  */
 #include <iostream>
 #include <sstream>
@@ -22,6 +19,8 @@ class Sales_data {
 		friend ostream& operator<<(ostream&, const Sales_data&);
 		friend Sales_data operator+(const Sales_data&, const Sales_data&);
 		Sales_data& operator+=(const Sales_data&);
+		Sales_data& operator=(const Sales_data&);
+		Sales_data& operator=(const string&);
 };
 istream& operator>>(istream &is, Sales_data &data)
 {
@@ -37,6 +36,24 @@ ostream& operator<<(ostream &os, const Sales_data &data)
 	os << data.revenue;
 	return os;
 }
+Sales_data operator+(Sales_data &dataA, Sales_data &dataB)
+{
+	Sales_data tmp;
+	if (dataA.bookNo == dataB.bookNo) {
+		tmp.bookNo = dataA.bookNo;
+		tmp.units_sold = dataA.units_sold + dataB.units_sold;
+		tmp.revenue = dataA.revenue + dataB.revenue;
+	}
+	return tmp;
+}
+Sales_data operator+=(Sales_data &dataA, Sales_data &dataB)
+{
+	if (dataA.bookNo == dataB.bookNo) {
+		dataA.units_sold = dataA.units_sold + dataB.units_sold;
+		dataA.revenue = dataA.revenue + dataB.revenue;
+	}
+	return dataA;
+}
 Sales_data operator+(const Sales_data &lhs, const Sales_data &rhs)
 {
 	Sales_data result;
@@ -49,10 +66,30 @@ Sales_data operator+(const Sales_data &lhs, const Sales_data &rhs)
 }
 Sales_data& Sales_data::operator+=(const Sales_data &data)
 {
+	//if (bookNo == data.bookNo) {
+	//	units_sold += data.units_sold;
+	//	revenue += data.revenue;
+	//}
+	Sales_data tmp = *this + data;
 	if (bookNo == data.bookNo) {
-		units_sold += data.units_sold;
-		revenue += data.revenue;
+		units_sold = tmp.units_sold;
+		revenue = tmp.revenue;
 	}
+
+	return *this;
+}
+Sales_data& Sales_data::operator=(const Sales_data &data)
+{
+	bookNo = data.bookNo;
+	units_sold = data.units_sold;
+	revenue = data.revenue;
+	return *this;
+}
+Sales_data& Sales_data::operator=(const string &isbn)
+{
+	bookNo = isbn;
+	units_sold = 0;
+	revenue = 0;
 	return *this;
 }
 
