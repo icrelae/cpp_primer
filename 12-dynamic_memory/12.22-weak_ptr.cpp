@@ -1,8 +1,8 @@
 /* 2016.12.30 11:40
  * P_423
  * add:
- *	StrBlobPtr const begin() const;
- * 	StrBlobPtr(StrBlob const &a, size_t sz = 0);
+ *	ConstStrBlobPtr const begin() const;
+ * 	ConstStrBlobPtr(StrBlob const &a, size_t sz = 0);
  * 
  */
 #include <iostream>
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class StrBlobPtr;
+class ConstStrBlobPtr;
 
 class StrBlob {
 	public:
@@ -28,11 +28,10 @@ class StrBlob {
 		string& back();
 		string const & front() const;
 		string const & back() const;
-		StrBlobPtr begin();
-		StrBlobPtr const begin() const;
-		StrBlobPtr end();
+		ConstStrBlobPtr begin() const;
+		ConstStrBlobPtr end() const;
 	private:
-		friend class StrBlobPtr;
+		friend class ConstStrBlobPtr;
 		shared_ptr<vector<string>> data;
 		void Check(size_type i, string const &msg) const;
 };
@@ -78,58 +77,54 @@ string const & StrBlob::back() const
 	return const_cast<string const &>(data->back());
 }
 
-class StrBlobPtr {
+class ConstStrBlobPtr {
 	public:
-		StrBlobPtr(): curr(0) { }
-		StrBlobPtr(StrBlob &a, size_t sz = 0):
+		ConstStrBlobPtr(): curr(0) { }
+		ConstStrBlobPtr(StrBlob &a, size_t sz = 0):
 			wptr(a.data), curr(sz) { }
-		StrBlobPtr(StrBlob const &a, size_t sz = 0):
+		ConstStrBlobPtr(StrBlob const &a, size_t sz = 0):
 			wptr(a.data), curr(sz) { }
-		string & Deref() const;
-		StrBlobPtr & Incr();
+		const string & Deref() const;
+		ConstStrBlobPtr & Incr();
 	private:
 		shared_ptr<vector<string>> Check(size_t, string const &) const;
 		weak_ptr<vector<string>> wptr;
 		size_t curr;
 };
-shared_ptr<vector<string>> StrBlobPtr::Check(size_t i, string const &msg) const
+shared_ptr<vector<string>> ConstStrBlobPtr::Check(size_t i, string const &msg) const
 {
 	auto sptr = wptr.lock();
 	if (sptr == NULL)
-		throw runtime_error("unbound StrBlobPtr");;
+		throw runtime_error("unbound ConstStrBlobPtr");;
 	if (i >= sptr->size())
 		throw out_of_range(msg);
 	return sptr;
 }
-string & StrBlobPtr::Deref() const
+const string & ConstStrBlobPtr::Deref() const
 {
-	auto sptr = Check(curr, "Dereference of StrBlobPtr");
+	auto sptr = Check(curr, "Dereference of ConstStrBlobPtr");
 	return sptr->at(curr);
 }
-StrBlobPtr & StrBlobPtr::Incr()
+ConstStrBlobPtr & ConstStrBlobPtr::Incr()
 {
-	Check(curr, "increment past end of StrBlobPtr");
+	Check(curr, "increment past end of ConstStrBlobPtr");
 	++curr;
 	return *this;
 }
 
-StrBlobPtr StrBlob::begin()
+ConstStrBlobPtr StrBlob::begin() const
 {
-	return StrBlobPtr(*this);
+	return ConstStrBlobPtr(*this);
 }
-StrBlobPtr const StrBlob::begin() const
+ConstStrBlobPtr StrBlob::end() const
 {
-	return StrBlobPtr(*this);
-}
-StrBlobPtr StrBlob::end()
-{
-	return StrBlobPtr(*this, data->size());
+	return ConstStrBlobPtr(*this, data->size());
 }
 
 int main(int argc, char **argv)
 {
 	StrBlob const sb{"a", "s", "d", "f", "g", "h", "j"};
-	StrBlobPtr sbp = sb.begin();
+	ConstStrBlobPtr sbp = sb.begin();
 	for (size_t i = 0; i < sb.size(); ++i) {
 		cout << sbp.Deref() << ' ';
 		sbp.Incr();
