@@ -54,9 +54,15 @@ class StrBlob {
 		friend class StrBlobPtr;
 		friend class ConstStrBlobPtr;
 		shared_ptr<vector<string>> data;
-		void Check(size_type i, string const &msg) const;
+		void Check(size_t, const string&) const;
 };
+StrBlob::StrBlob(): data(make_shared<vector<string>>())
+{
+}
 StrBlob::StrBlob(const StrBlob &orig): data(make_shared<vector<string>>(*orig.data))
+{
+}
+StrBlob::StrBlob(initializer_list<string> il): data(make_shared<vector<string>>(il))
 {
 }
 StrBlob& StrBlob::operator=(const StrBlob &orig)
@@ -85,6 +91,41 @@ const string& StrBlob::operator[](size_t n) const
 {
 	Check(n, "out of range");
 	return data->at(n);
+}
+string& StrBlob::front()
+{
+	Check(0, "front on empty StrBlob");
+	return data->front();
+}
+string& StrBlob::back()
+{
+	Check(0, "back on empty StrBlob");
+	return data->back();
+}
+void StrBlob::pop_back()
+{
+	Check(0, "pop_back on empty StrBlob");
+	data->pop_back();
+}
+void StrBlob::pop_back() const
+{
+	Check(0, "pop_back on empty StrBlob");
+	data->pop_back();
+}
+string const & StrBlob::front() const
+{
+	Check(0, "const front on empty StrBlob");
+	return const_cast<string const &>(data->front());
+}
+string const & StrBlob::back() const
+{
+	Check(0, "const back on empty StrBlob");
+	return const_cast<string const &>(data->back());
+}
+void StrBlob::Check(size_t i, const string &msg) const
+{
+	if (i >= data->size())
+		throw out_of_range(msg);
 }
 
 class StrBlobPtr {

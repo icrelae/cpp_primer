@@ -1,6 +1,11 @@
-/* 2017.02.07 19:48
+
+/* 2017.01.18 20:05
  * P_504
- * add operator: ++ --
+ * add:
+ *	StrBlobPtr& StrBlobPtr::operator++();
+ * 	StrBlobPtr& StrBlobPtr::operator--();
+ *	StrBlobPtr& StrBlobPtr::operator++(int);
+ * 	StrBlobPtr& StrBlobPtr::operator--(int);
  */
 #include <iostream>
 #include <fstream>
@@ -21,8 +26,8 @@ class StrBlob {
 	public:
 		StrBlob();
 		StrBlob(const StrBlob&);
-		StrBlob& operator=(const StrBlob&);
 		StrBlob(initializer_list<string> il);
+		StrBlob& operator=(const StrBlob&);
 		typedef vector<string>::size_type size_type;
 		bool empty() const {return data->empty();}
 		size_type size() const {return data->size();}
@@ -44,9 +49,15 @@ class StrBlob {
 	private:
 		friend class StrBlobPtr;
 		shared_ptr<vector<string>> data;
-		void Check(size_type i, string const &msg) const;
+		void Check(size_t, const string&) const;
 };
+StrBlob::StrBlob(): data(make_shared<vector<string>>())
+{
+}
 StrBlob::StrBlob(const StrBlob &orig): data(make_shared<vector<string>>(*orig.data))
+{
+}
+StrBlob::StrBlob(initializer_list<string> il): data(make_shared<vector<string>>(il))
 {
 }
 StrBlob& StrBlob::operator=(const StrBlob &orig)
@@ -76,14 +87,48 @@ const string& StrBlob::operator[](size_t n) const
 	Check(n, "out of range");
 	return data->at(n);
 }
+string& StrBlob::front()
+{
+	Check(0, "front on empty StrBlob");
+	return data->front();
+}
+string& StrBlob::back()
+{
+	Check(0, "back on empty StrBlob");
+	return data->back();
+}
+void StrBlob::pop_back()
+{
+	Check(0, "pop_back on empty StrBlob");
+	data->pop_back();
+}
+void StrBlob::pop_back() const
+{
+	Check(0, "pop_back on empty StrBlob");
+	data->pop_back();
+}
+string const & StrBlob::front() const
+{
+	Check(0, "const front on empty StrBlob");
+	return const_cast<string const &>(data->front());
+}
+string const & StrBlob::back() const
+{
+	Check(0, "const back on empty StrBlob");
+	return const_cast<string const &>(data->back());
+}
+void StrBlob::Check(size_t i, const string &msg) const
+{
+	if (i >= data->size())
+		throw out_of_range(msg);
+}
 
 class StrBlobPtr {
 	public:
 		StrBlobPtr(): curr(0) { }
+		StrBlobPtr(StrBlobPtr& a): wptr(a.wptr), curr(a.curr) { }
 		StrBlobPtr(StrBlob &a, size_t sz = 0):
 			wptr(a.data), curr(sz) { }
-		StrBlobPtr(const StrBlobPtr& sbPtr):
-			wptr(sbPtr.wptr), curr(sbPtr.curr) { }
 		string & Deref() const;
 		StrBlobPtr & Incr();
 		friend bool operator==(const StrBlobPtr&, const StrBlobPtr&);
@@ -95,7 +140,7 @@ class StrBlobPtr {
 		StrBlobPtr& operator--();
 		StrBlobPtr operator++(int);
 		StrBlobPtr operator--(int);
-	private:
+	public:
 		shared_ptr<vector<string>> Check(size_t, string const &) const;
 		weak_ptr<vector<string>> wptr;
 		size_t curr;
@@ -122,10 +167,19 @@ const string& StrBlobPtr::operator[](size_t n) const
 	auto sptr = Check(n, "out of range");
 	return sptr->at(n);
 }
+shared_ptr<vector<string>> StrBlobPtr::Check(size_t n, string const &msg) const
+{
+	shared_ptr<vector<string>> sptr = wptr.lock();
+	if (sptr == nullptr)
+		throw runtime_error("unbound weat_ptr");
+	if (sptr->size() <= n)
+		throw out_of_range(msg);
+	return sptr;
+}
 StrBlobPtr& StrBlobPtr::operator++()
 {
-	Check(curr, "increment past end of StrBlobPtr");
 	++curr;
+	Check(curr, "increment past end of StrBlobPtr");
 	return *this;
 }
 StrBlobPtr& StrBlobPtr::operator--()
@@ -146,18 +200,20 @@ StrBlobPtr StrBlobPtr::operator--(int)
 	--*this;
 	return ret;
 }
-shared_ptr<vector<string>> StrBlobPtr::Check(size_t n, string const &msg) const
-{
-	shared_ptr<vector<string>> sptr = wptr.lock();
-	if (sptr == nullptr)
-		throw runtime_error("unbound weat_ptr");
-	if (sptr->size() <= n)
-		throw out_of_range(msg);
-	return sptr;
-}
 
 int main(int argc, char **argv)
 {
+	StrBlob sb({"asdfdsa", "asd", "adsf", "as", "asd", "asd", "as"});
+	StrBlobPtr sbp(sb);
+	cout << sbp++.curr << ' ';
+	cout << sbp.curr << ' ';
+	cout << sbp.operator++(1).curr << ' ';
+	cout << sbp.curr << ' ';
+	cout << ++sbp.curr << ' ';
+	cout << sbp.curr << ' ';
+	cout << sbp.operator++().curr << ' ';
+	cout << sbp.curr << ' ';
+	// output: 0 1 1 2 3 3 4 4 
 
 	return 0;
 }
