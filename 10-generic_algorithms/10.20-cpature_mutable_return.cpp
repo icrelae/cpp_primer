@@ -2,6 +2,7 @@
  * P_354
  * !!!
  * ???
+ * transform(itBeg, itEnd, itResult, op)
  */
 #include <iostream>
 #include <string>
