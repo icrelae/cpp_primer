@@ -43,7 +43,7 @@ class Quote {
 class Disc_quote: public Quote {
 	public:
 		//Disc_quote() = default;
-		Disc_quote(const Disc_quote &dq):Quote(dq) { };
+		Disc_quote(const Quote &dq):Quote(dq) { };
 		Disc_quote& operator =(const Disc_quote &dq)
 		{
 			Quote::operator =(dq);
@@ -61,10 +61,10 @@ class Disc_quote: public Quote {
 class Bulk_quote: public Disc_quote {
 	public:
 		Bulk_quote() = default;
-		Bulk_quote(const Bulk_quote &bq):Disc_quote(bq) { };
-		Bulk_quote& operator =(const Bulk_quote &bq)
+		Bulk_quote(const Disc_quote &bq):Disc_quote(bq) { };
+		Bulk_quote& operator =(const Disc_quote &dq)
 		{
-			Disc_quote::operator =(bq);
+			Disc_quote::operator =(dq);
 			return *this;
 		}
 		Bulk_quote(const string&, double, size_t, double);
