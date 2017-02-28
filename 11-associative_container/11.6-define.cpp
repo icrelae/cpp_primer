@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	multiset<int> mset({1, 1, 2, 3, 1, 1, 2});
+	multiset<int> mset{1, 1, 2, 3, 1, 1, 2};
 	set<int> set(mset.begin(), mset.end());
 	for (auto const &x : mset)
 		cout << x << ' ';

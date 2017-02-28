@@ -27,11 +27,12 @@ void Process(shared_ptr<int> sptr)
 void Shared_ptrAndNewEG()
 {
 	// shared_ptr could be initialized using new !!!
-	// Shared_ptr<T>(new T) is explicit !!!
+	// shared_ptr<T>(new T) is explicit !!!
 	//shared_ptr<int> p1 = new int(1024);	// invalid
 	shared_ptr<int> p2(new int(1024));
 
 	shared_ptr<int> sptr = make_shared<int>(3);
+	// reset() will update reference count !!!
 	sptr.reset();
 	cout << sptr;
 	// output: 0

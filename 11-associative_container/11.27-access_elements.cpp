@@ -14,9 +14,12 @@
  *	return pair<decltype(c)::iterator itBeg, decltype(c)::iterator itEnd>
  *	ranger of elements which equal to the key, if not existent, all set c.end()
  *
- * lower_bound() and upper_bound() like begin() and end()
- *	if lower_bound() == upper_bound() means not found,
+ * lower_bound(key) and upper_bound(key) like begin() and end()
+ *	if lower_bound(key) == upper_bound(key) means not found,
  *	then they'll return an iterator of applicable place to insert key
+ *	EG:
+ *		1 1 1 3 4 5 6 7
+ *		*lower_bound(1) = 1; *upper_bound(1) = 3;
  */
 #include <iostream>
 #include <string>
