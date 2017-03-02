@@ -1,13 +1,21 @@
 /* 2017.02.27 21:24
  * P_558
  * !!!
- * access level of 'using base::constructor': !!!
+ * inherit constructor("using base::constructor;"): 1!!
+ *	// beneath are identical
+ *	using base::constructor;	// inherit constructor from base
+ *	derived(args): base(args) { }	// custom constructor
+ * constructors can't be inherited:
+ *	default-constructor, copy-constructor and move-constructor won't be
+ *	inherited, if they are not customized by user, compiler will synthesize
+ *	them
+ * access level of 'using base::constructor':
  *	'using base::constructor' in anywhere won't change access level, but 'using
  *	base::common_func' will
- * 'explicit' or 'constexpr' of 'using base::constructor': !!!
+ * 'explicit' or 'constexpr' of 'using base::constructor':
  *	'using' cannot specify 'explicit' or 'constexpr', they are all inherit from
  *	base-class
- * default arguments for 'using base::constructor': !!!
+ * default arguments for 'using base::constructor':
  *	default arguments won't be inherited, derived-class will generate many
  *	constructors, each constructor omit one default argument
  *	eg:
