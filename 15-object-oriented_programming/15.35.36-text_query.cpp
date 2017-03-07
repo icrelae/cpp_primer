@@ -1,27 +1,6 @@
 /* 2017.03.04 22:11
  * P_571
  * !!!
- *
- * (a)
- * * for Query("fiery")
- * WordQuery("fiery") > Query("fiery") >
- * * for Query("bird")
- * wordQuery("bird") > Query("bird") >
- * * for "&"
- * Query_base() > BinaryQuery(Query("fiery"), Query("bird"), "&") >
- * AndQuery(Query("fiery"), Query("bird")) >
- * Query(shared_ptr<Query_base>(new AndQuery(Query("fiery"), Query("bird")))) >
- * * for Query("wind")
- * wordQuery("wind") > Query("wind") >
- * * for "|"
- * Query_base() > BinaryQuery(Query("fiery&bird"), Query("wind"), "|") >
- * OrQuery(Query("fiery&bird"), Query("wind")) >
- * Query(shared_ptr<Query_base>(new OrQuery(Query("fiery&bird"), Query("wind")))) >
- * assign to 'Query q'
- * (b)
- * OrQuery.rep() -> AndQuery->rep()
- * (c)
- * OrQuery.eval() -> AndQuery->eval()
  */
 #include <iostream>
 #include <fstream>
@@ -236,6 +215,7 @@ int main(int argc, char **argv)
 {
 	Query q = Query("fiery") & Query("bird") | Query("wind");
 	cout << q;
+	// output: ((fiery & bird) | wind)
 
 	return 0;
 }

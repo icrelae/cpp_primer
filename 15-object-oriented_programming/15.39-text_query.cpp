@@ -1,27 +1,11 @@
 /* 2017.03.04 22:11
- * P_571
+ * P_574
  * !!!
- *
- * (a)
- * * for Query("fiery")
- * WordQuery("fiery") > Query("fiery") >
- * * for Query("bird")
- * wordQuery("bird") > Query("bird") >
- * * for "&"
- * Query_base() > BinaryQuery(Query("fiery"), Query("bird"), "&") >
- * AndQuery(Query("fiery"), Query("bird")) >
- * Query(shared_ptr<Query_base>(new AndQuery(Query("fiery"), Query("bird")))) >
- * * for Query("wind")
- * wordQuery("wind") > Query("wind") >
- * * for "|"
- * Query_base() > BinaryQuery(Query("fiery&bird"), Query("wind"), "|") >
- * OrQuery(Query("fiery&bird"), Query("wind")) >
- * Query(shared_ptr<Query_base>(new OrQuery(Query("fiery&bird"), Query("wind")))) >
- * assign to 'Query q'
- * (b)
- * OrQuery.rep() -> AndQuery->rep()
- * (c)
- * OrQuery.eval() -> AndQuery->eval()
+ * set_intersection(	// insert intersection of a&b into set !!!
+ *	a.begin(), a.end(),
+ *	b.begin(), b.end(),
+ *	inserter(set, set.begin()));
+ * header: <algorithm>
  */
 #include <iostream>
 #include <fstream>
@@ -31,6 +15,7 @@
 #include <memory>
 #include <set>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -80,6 +65,13 @@ class QueryResult {
 		}
 		shared_ptr<vector<string>> get_file() {
 			return file;
+		}
+		void show(ostream &os) {
+			os << sought << endl;
+			for (auto x : *lines) {
+				os << x << ": ";
+				os << file->at(x) << endl;
+			}
 		}
 	private:
 		string sought;
@@ -138,6 +130,7 @@ class WordQuery: public Query_base {
 		WordQuery(const string &s): query_word(s) {
 		}
 		QueryResult eval(const TextQuery &t) const {
+			// here's returning (seekStr, setOfLines, fileContent)
 			return t.query(query_word);
 		}
 		string rep() const {
@@ -154,6 +147,7 @@ class Query {
 		Query(const string &s): q(new WordQuery(s)) {
 		}
 		QueryResult eval(const TextQuery &t) const {
+			// here's 'q' can be AndQuery, OrQuery or WordQuery !!!
 			return q->eval(t);
 		}
 		string rep() const {
@@ -177,8 +171,20 @@ class NotQuery: public Query_base {
 		string rep() const {
 			return "~(" + query.rep() + ")";
 		}
-		QueryResult eval(const TextQuery&) const {
-			// TODO
+		QueryResult eval(const TextQuery &text) const {
+			QueryResult result = query.eval(text);
+			shared_ptr<set<line_no>> ret_lines =
+				make_shared<set<line_no>>();
+			auto beg = result.begin(), end = result.end();
+			auto size = result.get_file()->size();
+			// insert !(result.lines) of result.file
+			for (size_t n = 0; n != size; ++n) {
+				if (beg == end || *beg != n)
+					ret_lines->insert(n);
+				else if (beg != end)
+					++beg;
+			}
+			return QueryResult(rep(), ret_lines, result.get_file());
 		};
 		Query query;
 };
@@ -207,8 +213,16 @@ class AndQuery: public BinaryQuery {
 		AndQuery(const Query &l, const Query &r):
 			BinaryQuery(l, r, "&") {
 		}
-		QueryResult eval(const TextQuery&) const {
-			// TODO
+		QueryResult eval(const TextQuery &text) const {
+			QueryResult left = lhs.eval(text);
+			QueryResult right = rhs.eval(text);
+			shared_ptr<set<line_no>> ret_lines =
+				make_shared<set<line_no>>();
+			set_intersection(
+					left.begin(), left.end(),
+					right.begin(), right.end(),
+					inserter(*ret_lines, ret_lines->begin()));
+			return QueryResult(rep(), ret_lines, left.get_file());
 		}
 };
 Query operator &(const Query &lhs, const Query &rhs)
@@ -222,8 +236,14 @@ class OrQuery: public BinaryQuery {
 		OrQuery(const Query &l, const Query &r):
 			BinaryQuery(l, r, "|") {
 		}
-		QueryResult eval(const TextQuery&) const {
-			// TODO
+		QueryResult eval(const TextQuery &text) const {
+			QueryResult left = lhs.eval(text);
+			QueryResult right = rhs.eval(text);
+			shared_ptr<set<line_no>> ret_lines =
+				make_shared<set<line_no>>(left.begin(), left.end());
+			ret_lines->insert(right.begin(), right.end());
+			// here's returning (seekStr, setOfLines, fileContent)
+			return QueryResult(rep(), ret_lines, left.get_file());
 		}
 };
 Query operator |(const Query &lhs, const Query &rhs)
@@ -235,8 +255,28 @@ Query operator |(const Query &lhs, const Query &rhs)
 int main(int argc, char **argv)
 {
 	Query q = Query("fiery") & Query("bird") | Query("wind");
-	cout << q;
+	ifstream is("/tmp/tmp");
+	TextQuery text(is);
+	QueryResult result = q.eval(text);
+	result.show(cout);
+	/* output:
+	 *	((fiery & bird) | wind)
+	 *	1: Her Daddy says when the wind blows
+	 *	3: like a fiery bird in flight.
+	 */
 
 	return 0;
 }
 
+/* E.G. Text:
+ * Alice Emma has long flowing red hair.
+ * Her Daddy says when the wind blows
+ * through her hair, it looks almost alive,
+ * like a fiery bird in flight.
+ * A beautiful fiery bird, he tells her,
+ * magical but untamed.
+ * "Daddy, shush, there is no such thing,"
+ * she tells him, at the same time wanting
+ * him to tell her more.
+ * Shyly, she asks, "I mean, Daddy, is there?"
+ */
