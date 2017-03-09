@@ -22,6 +22,15 @@ class TextQuery {
 		TextQuery(ifstream&);
 		QueryResult query(const string&) const;
 	private:
+		string erasePunc(string str) {
+			static set<char> punctuations{' ', ',', '.', ';'};
+			for (auto itStr = str.begin(); itStr != str.end(); ++itStr) {
+				if (punctuations.find(*itStr) != punctuations.end()) {
+					itStr = str.erase(itStr) - 1;
+				}
+			}
+			return str;
+		}
 		shared_ptr<vector<string>> file;
 		map<string, shared_ptr<set<line_no>>> wm;
 };
@@ -34,6 +43,7 @@ TextQuery::TextQuery(ifstream &is): file(new vector<string>)
 		istringstream line(text);
 		string word;
 		while (line >> word) {
+			word = erasePunc(word);
 			auto &lines = wm[word];
 			if (lines == NULL)
 				lines.reset(new set<line_no>);
@@ -51,7 +61,7 @@ class QueryResult {
 				shared_ptr<set<line_no>> p,
 				shared_ptr<vector<string>> f):
 			sought(s), lines(p), file(f) {
-		}
+			}
 		set<line_no>::const_iterator begin() {
 			return lines->begin();
 		}
@@ -137,7 +147,7 @@ class WordQuery: public Query_base {
 		WordQuery(const WordQuery&) = default;
 		WordQuery(const WordQuery &&wq):
 			query_word(std::move(wq.query_word)) {
-		}
+			}
 		WordQuery& operator=(const WordQuery&) = default;
 		WordQuery& operator=(const WordQuery && wq) {
 			query_word = std::move(wq.query_word);
@@ -175,7 +185,7 @@ class Query {
 		}
 		Query(const Query &&wq):
 			q(std::move(wq).clone()) {
-		}
+			}
 		Query& operator=(const Query &query) {
 			delete q;
 			q = query.clone();
@@ -231,7 +241,7 @@ class NotQuery: public Query_base {
 		}
 		NotQuery(const NotQuery &&nq):
 			query(std::move(nq.query)) {
-		}
+			}
 		NotQuery& operator=(const NotQuery &nq) {
 			query = nq.query;
 			return *this;
@@ -258,7 +268,7 @@ class BinaryQuery: public Query_base {
 	protected:
 		BinaryQuery(const Query &l, const Query &r, string s):
 			lhs(l), rhs(r), opSym(s) {
-		}
+			}
 		virtual QueryResult eval(const TextQuery&) const override = 0;
 		virtual string rep() const override {
 			return "(" + lhs.rep() + " "
@@ -268,11 +278,11 @@ class BinaryQuery: public Query_base {
 		// add copy-constructor and copy-assignment for clone() !!!
 		BinaryQuery(const BinaryQuery &bq):
 			lhs(bq.lhs), rhs(bq.rhs), opSym(bq.opSym) {
-		}
+			}
 		BinaryQuery(const BinaryQuery &&bq):
 			lhs(std::move(bq.lhs)), rhs(std::move(bq.rhs)),
 			opSym(std::move(bq.opSym))  {
-		}
+			}
 		BinaryQuery& operator=(const BinaryQuery &bq) {
 			lhs = bq.lhs;
 			rhs = bq.rhs;
@@ -295,7 +305,7 @@ class AndQuery: public BinaryQuery {
 		friend Query operator &(const Query&, const Query&);
 		AndQuery(const Query &l, const Query &r):
 			BinaryQuery(l, r, "&") {
-		}
+			}
 		QueryResult eval(const TextQuery &text) const {
 			QueryResult left = lhs.eval(text);
 			QueryResult right = rhs.eval(text);
@@ -337,7 +347,7 @@ class OrQuery: public BinaryQuery {
 		friend Query operator |(const Query&, const Query&);
 		OrQuery(const Query &l, const Query &r):
 			BinaryQuery(l, r, "|") {
-		}
+			}
 		QueryResult eval(const TextQuery &text) const {
 			QueryResult left = lhs.eval(text);
 			QueryResult right = rhs.eval(text);

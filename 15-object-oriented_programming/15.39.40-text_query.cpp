@@ -27,6 +27,15 @@ class TextQuery {
 		TextQuery(ifstream&);
 		QueryResult query(const string&) const;
 	private:
+		string erasePunc(string str) {
+			static set<char> punctuations{' ', ',', '.', ';'};
+			for (auto itStr = str.begin(); itStr != str.end(); ++itStr) {
+				if (punctuations.find(*itStr) != punctuations.end()) {
+					itStr = str.erase(itStr) - 1;
+				}
+			}
+			return str;
+		}
 		shared_ptr<vector<string>> file;
 		map<string, shared_ptr<set<line_no>>> wm;
 };
@@ -39,6 +48,7 @@ TextQuery::TextQuery(ifstream &is): file(new vector<string>)
 		istringstream line(text);
 		string word;
 		while (line >> word) {
+			word = erasePunc(word);
 			auto &lines = wm[word];
 			if (lines == NULL)
 				lines.reset(new set<line_no>);
