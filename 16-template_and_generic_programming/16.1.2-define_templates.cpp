@@ -1,9 +1,9 @@
 /* 2017.03.12 20:53
  * P_583
+ * 
  * in order to instantiate a template, compiler have to know the defination of
  * whole template function; so it's different from class, the defination of
  * template function or member template function always be sited in headers;
- * 
  */
 #include <iostream>
 #include <string>
