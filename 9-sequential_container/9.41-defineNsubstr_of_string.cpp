@@ -34,8 +34,8 @@ void SubStringEG()
 	string str0("123456789");
 	cout << str0.substr(0, 5) << ' ';
 	cout << str0.substr(6) << ' ';
-	cout << str0.substr(6, 11) << ' ';
-	// output: 12345 789 789 
+	cout << str0.substr(6, 2) << ' ';
+	// output: 12345 789 78
 }
 
 string DefStrFromVec(vector<char> vecCh)
@@ -50,6 +50,7 @@ int main(int argv, char **argc)
 	cout << DefStrFromVec(vecCh) << ' ';
 	vecCh.assign(3, 'c');
 	cout << DefStrFromVec(vecCh) << ' ';
+
 	return 0;
 }
 

@@ -39,7 +39,7 @@ DateType::DateType(const string &str)
 }
 void DateType::Constructor0(const string &str)
 {
-	/* January 1,1990*/
+	/* January 1,1990 */
 	string monthStr = str.substr(0, str.find(' '));
 	for (size_t i = 0; i < 12; ++i)
 		if (monthStrArray[i] == monthStr)
