@@ -134,8 +134,10 @@ class StrBlobPtr {
 		friend bool operator<(const StrBlobPtr&, const StrBlobPtr&);
 		string& operator[](size_t);
 		const string& operator[](size_t) const;
+		// ++i, --i
 		StrBlobPtr& operator++();
 		StrBlobPtr& operator--();
+		// i++, i--
 		StrBlobPtr operator++(int);
 		StrBlobPtr operator--(int);
 		friend StrBlobPtr operator+(const StrBlobPtr&, int);
