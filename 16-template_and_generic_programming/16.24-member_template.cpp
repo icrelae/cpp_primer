@@ -14,7 +14,7 @@ class Blob {
 		typedef T value_type;
 		typedef typename vector<T>::size_type size_type;
 		Blob();
-		Blob(typename vector<T>::const_iterator, typename vector<T>::constiterator);
+		Blob(typename vector<T>::const_iterator, typename vector<T>::const_iterator);
 		Blob(initializer_list<T> il);
 		size_type size() const {
 			return data->size();
@@ -41,17 +41,17 @@ class Blob {
 		void check(size_type, const string&) const;
 };
 template<typename T>
-Blob<T>::Blob(): data(make_shared<Blob::value_type>())
+Blob<T>::Blob(): data(make_shared<vector<Blob::value_type>>())
 {
 }
 template<typename T>
 Blob<T>::Blob(typename vector<T>::const_iterator itBeg,
-		typename vector<T>::constiterator itEnd):
+		typename vector<T>::const_iterator itEnd):
 	data(make_shared<vector<T>>(itBeg, itEnd))
 {
 }
 template<typename T>
-Blob<T>::Blob(initializer_list<T> il): data(make_shared<Blob::value_type>(il))
+Blob<T>::Blob(initializer_list<T> il): data(make_shared<vector<Blob::value_type>>(il))
 {
 }
 template<typename T>

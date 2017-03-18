@@ -5,7 +5,7 @@
  * shared_ptr<T> p(q): 'q' is point to 'new' space; after copy, memory of 'q'
  *	will be in charged by 'p'
  * shared_ptr<T> p(u): 'u' is unique_ptr; after copy, 'u' will be empty
- * shared_ptr<T> p(q, d): 'p' take over 'q' and using 'd' raplace 'delete'
+ * shared_ptr<T> p(q, d): 'p' take over 'q' and using 'd' replace 'delete'
  * p.reset():
  * p.reset(q):
  * p.reset(q, d):
@@ -23,6 +23,14 @@ using namespace std;
 void Process(shared_ptr<int> sptr)
 {
 	cout << sptr.use_count() << endl;
+}
+void Del1(int)
+{
+	cout << "del1" << endl;
+}
+void Del2(double)
+{
+	cout << "del2" << endl;
 }
 void Shared_ptrAndNewEG()
 {
@@ -54,6 +62,8 @@ void Shared_ptrAndNewEG()
 	if (sptr.unique() != true)
 		sptr.reset(new int(*sptr));
 	*sptr += 1;
+
+	sptr.reset(new int(3), Del1);
 }
 
 int main(int argc, char **argv)
