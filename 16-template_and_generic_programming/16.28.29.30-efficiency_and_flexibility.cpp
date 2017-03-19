@@ -1,5 +1,6 @@
 /* 2017.03.18 09:29
  * P_600
+ * !!!
  * efficiency and flexibility !!!
  * deleter of shared_ptr can be reseted which means it can be bind dynamically,
  * flexibal but inefficient
