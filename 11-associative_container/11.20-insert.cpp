@@ -8,6 +8,7 @@
  *			'it' point to element equals to val
  *			'bl' indicate inserted or not
  *		for multi: feturn 'ContainerType::iterator'
+ *		have to define 'operator==()' for content
  *	c.insert(itBeg, itEnd)
  *	c.insert({a, b, c, ...})
  *		return void
