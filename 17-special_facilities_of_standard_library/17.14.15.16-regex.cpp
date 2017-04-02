@@ -9,7 +9,7 @@
  *				// f: [regex|regex_constants]::syntax_option_type
  *	r1 = reg;
  *	r1.assign(re, f);
- *	r.mark_count();		// number of sub-expression
+ *	r.mark_count();		// number of subexpression
  *	r.flags();		// return 'syntax_option_type'
  *	regex_match(seq, m, r, mft)	// seq: string| charIt beg, end| char[];
  *	regex_search(seq, m, r, mtf);	// m: match;
@@ -18,11 +18,11 @@
  *	regex_replace
  *	sregex_iterator
  *	smatch			// container which keep result in it
- *	ssub_match		// result of matched sub-expression in string
+ *	ssub_match		// result of matched subexpression in string
  *
  *	syntax_optiont_type:
  *		icase		// ignore case
- *		nosubs		// never store matched sub-expression
+ *		nosubs		// never store matched subexpression
  *		optimize	// execute speed take precedence over construct speed
  *		ECMAScript	// ECMA-262 grammer
  *		basic		// POSIX basic grammer
