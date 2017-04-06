@@ -1,4 +1,5 @@
 /* 2017.04.03 11:42
+ * P_656
  * subexpression: ssub_match !!!
  * ssm.matched		// bool, whether a 'ssub_match' matched
  * ssm.first|second	// head it and past-the-end it, equal when mismatched
