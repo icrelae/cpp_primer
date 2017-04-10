@@ -12,6 +12,7 @@
  *			// read into 'sink' at most 'size' byte, or meet
  *			// 'delim', in that case leave 'delim' in stream
  * is.getline(sink, size, delim)
+ * getline(istream, string)
  *			// read and drop 'delim'
  * is.read(sink, size)	// return 'is'
  * is.gcount()		// return byte number of last unformatted read
