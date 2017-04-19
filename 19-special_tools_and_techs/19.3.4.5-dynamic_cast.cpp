@@ -12,7 +12,7 @@
  *	'e=0' if failed
  * dynamic_cast<type&>(e):
  *	'e' have to be a lval
- *	throw 'bad_cast' if failed
+ *	throw exception 'bad_cast'(header <typeinfo>) if failed
  * dynamic_cast<type&&>(e):
  *	'e' have to be a rval
  */
