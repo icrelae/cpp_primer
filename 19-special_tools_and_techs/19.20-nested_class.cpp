@@ -1,5 +1,5 @@
-/* 2017.03.04 22:11
- * P_574
+/* 2017.04.22 17:03
+ * P_749
  * !!!
  */
 #include <iostream>
@@ -14,10 +14,10 @@
 
 using namespace std;
 
-class QueryResult;
 class TextQuery {
 	public:
 		using line_no = vector<std::string>::size_type;
+		class QueryResult;
 		TextQuery(ifstream&);
 		QueryResult query(const string&) const;
 	private:
@@ -51,7 +51,7 @@ TextQuery::TextQuery(ifstream &is): file(new vector<string>)
 	}
 }
 // totally as a result genarated by TextQuery::query()
-class QueryResult {
+class TextQuery::QueryResult {
 	private:
 		friend ostream & print(ostream &, QueryResult const &);
 	public:
@@ -83,7 +83,7 @@ class QueryResult {
 		shared_ptr<vector<string>> file;
 };
 // TextQuery::query() have to be defined after the defination of Query_base
-QueryResult TextQuery::query(string const &sought) const
+TextQuery::QueryResult TextQuery::query(string const &sought) const
 {
 	static shared_ptr<set<line_no>> nodata(new set<line_no>);
 	// here 'loc' is a pair of '{string, shared_ptr<set<line_no>>}'
@@ -93,7 +93,7 @@ QueryResult TextQuery::query(string const &sought) const
 	else
 		return QueryResult(sought, loc->second, file);
 }
-ostream & print(ostream &os, QueryResult const &qr)
+ostream & print(ostream &os, TextQuery::QueryResult const &qr)
 {
 	os << qr.sought << " occurs " << qr.lines->size() << ' ';
 	os << qr.lines->size() << "times" << endl;
@@ -126,7 +126,7 @@ class Query_base {
 		virtual Query_base* clone() && = 0;
 	private:
 		friend class Query;
-		virtual QueryResult eval(const TextQuery&) const = 0;
+		virtual TextQuery::QueryResult eval(const TextQuery&) const = 0;
 		virtual string rep() const = 0;
 };
 class WordQuery: public Query_base {
@@ -135,7 +135,7 @@ class WordQuery: public Query_base {
 		friend class Query;
 		WordQuery(const string &s): query_word(s) {
 		}
-		virtual QueryResult eval(const TextQuery &t) const override {
+		virtual TextQuery::QueryResult eval(const TextQuery &t) const override {
 			// here's returning (seekStr, setOfLines, fileContent)
 			return t.query(query_word);
 		}
@@ -172,7 +172,7 @@ class Query {
 			delete q;
 			q = NULL;
 		}
-		virtual QueryResult eval(const TextQuery &t) const {
+		virtual TextQuery::QueryResult eval(const TextQuery &t) const {
 			// here's 'q' can be AndQuery, OrQuery or WordQuery !!!
 			return q->eval(t);
 		}
@@ -217,8 +217,8 @@ class NotQuery: public Query_base {
 		NotQuery(const Query &q): query(q) {
 		}
 
-		virtual QueryResult eval(const TextQuery &text) const override {
-			QueryResult result = query.eval(text);
+		virtual TextQuery::QueryResult eval(const TextQuery &text) const override {
+			TextQuery::QueryResult result = query.eval(text);
 			shared_ptr<set<line_no>> ret_lines =
 				make_shared<set<line_no>>();
 			auto beg = result.begin(), end = result.end();
@@ -230,7 +230,7 @@ class NotQuery: public Query_base {
 				else if (beg != end)
 					++beg;
 			}
-			return QueryResult(rep(), ret_lines, result.get_file());
+			return TextQuery::QueryResult(rep(), ret_lines, result.get_file());
 		};
 		virtual string rep() const override {
 			return "~(" + query.rep() + ")";
@@ -268,7 +268,7 @@ class BinaryQuery: public Query_base {
 		BinaryQuery(const Query &l, const Query &r, string s):
 			lhs(l), rhs(r), opSym(s) {
 			}
-		virtual QueryResult eval(const TextQuery&) const override = 0;
+		virtual TextQuery::QueryResult eval(const TextQuery&) const override = 0;
 		virtual string rep() const override {
 			return "(" + lhs.rep() + " "
 				+ opSym + " "
@@ -305,16 +305,16 @@ class AndQuery: public BinaryQuery {
 		AndQuery(const Query &l, const Query &r):
 			BinaryQuery(l, r, "&") {
 			}
-		QueryResult eval(const TextQuery &text) const {
-			QueryResult left = lhs.eval(text);
-			QueryResult right = rhs.eval(text);
+		TextQuery::QueryResult eval(const TextQuery &text) const {
+			TextQuery::QueryResult left = lhs.eval(text);
+			TextQuery::QueryResult right = rhs.eval(text);
 			shared_ptr<set<line_no>> ret_lines =
 				make_shared<set<line_no>>();
 			set_intersection(
 					left.begin(), left.end(),
 					right.begin(), right.end(),
 					inserter(*ret_lines, ret_lines->begin()));
-			return QueryResult(rep(), ret_lines, left.get_file());
+			return TextQuery::QueryResult(rep(), ret_lines, left.get_file());
 		}
 		// add copy-constructor and copy-assignment for clone() !!!
 		AndQuery(const AndQuery &aq):BinaryQuery(aq) {
@@ -347,14 +347,14 @@ class OrQuery: public BinaryQuery {
 		OrQuery(const Query &l, const Query &r):
 			BinaryQuery(l, r, "|") {
 			}
-		QueryResult eval(const TextQuery &text) const {
-			QueryResult left = lhs.eval(text);
-			QueryResult right = rhs.eval(text);
+		TextQuery::QueryResult eval(const TextQuery &text) const {
+			TextQuery::QueryResult left = lhs.eval(text);
+			TextQuery::QueryResult right = rhs.eval(text);
 			shared_ptr<set<line_no>> ret_lines =
 				make_shared<set<line_no>>(left.begin(), left.end());
 			ret_lines->insert(right.begin(), right.end());
 			// here's returning (seekStr, setOfLines, fileContent)
-			return QueryResult(rep(), ret_lines, left.get_file());
+			return TextQuery::QueryResult(rep(), ret_lines, left.get_file());
 		}
 		// add copy-constructor and copy-assignment for clone() !!!
 		OrQuery(const OrQuery &oq):BinaryQuery(oq) {
@@ -402,7 +402,7 @@ int main(int argc, char **argv)
 	Query q = Query("fiery") & Query("bird") | Query("wind");
 	ifstream is("/tmp/tmp");
 	TextQuery text(is);
-	QueryResult result = q.eval(text);
+	TextQuery::QueryResult result = q.eval(text);
 	history.add_query(q);
 	history.showAll(cout);
 	result.show(cout);
