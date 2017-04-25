@@ -1,6 +1,5 @@
 /* 2016.11.15 21:06
  * !!!
- *
  * difference_type, value_type, reference, const_reference !!!
  * vector<int>::iterator
  */

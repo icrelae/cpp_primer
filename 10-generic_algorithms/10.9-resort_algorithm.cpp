@@ -15,7 +15,11 @@ using namespace std;
 
 void ElimDuplicates(vector<int> &vecInt)
 {
-	sort(vecInt.begin(), vecInt.end());
+	//sort(vecInt.begin(), vecInt.end());
+	sort(vecInt.begin(), vecInt.end(),
+			[] (const int &a, const int &b) {
+				return a < b;
+			});
 	auto end_unique = unique(vecInt.begin(), vecInt.end());
 	vecInt.erase(end_unique, vecInt.end());
 }
