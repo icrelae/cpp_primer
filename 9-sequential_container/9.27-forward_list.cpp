@@ -3,7 +3,7 @@
  * !!!
  * add and delete for forward_list: !!!
  * c.before_begin(): return an iterator point to previous node of first element
- * c.cbefore_bdgin(): return an const_iterator
+ * c.cbefore_begin(): return an const_iterator
  * c.insert_after(itPos, t): insert t after itPos
  * c.insert_after(itPos, n, t): insert t after itPos n times
  * c.insert_after(itPos, itPosBeg, itPosEnd): insert from itPosBeg to itPosEnd after itPos
