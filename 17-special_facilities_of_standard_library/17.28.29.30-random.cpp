@@ -47,14 +47,14 @@ unsigned Ex(unsigned min, unsigned max, unsigned seed = time(0))
 int main(int argc, char **argv)
 {
 	for (size_t i = 0; i < 5; ++i)
-		cout << Ex(-5, 5) << ' ';
+		cout << Ex(0, 5) << ' ';
 	cout << endl;
 	for (size_t i = 0; i < 5; ++i)
-		cout << Ex(-5, 5, 0) << ' ';
+		cout << Ex(0, 5, 0) << ' ';
 	cout << endl;
 	/* output:
-	 *	2472763047 2687472473 3794886810 2495033427 540325247 
-	 *	3559489993 1224111000 1609323287 4068725171 1023341142 
+	 *	5 4 2 5 0 
+	 *	3 4 5 1 4 
 	 */
 
 	return 0;
