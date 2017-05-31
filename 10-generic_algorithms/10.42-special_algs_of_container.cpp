@@ -4,7 +4,7 @@
  * special algorithm of container: !!!
  * common sort() need random-access iterator, so its unsuitable for list|forward_list
  * as a result, list|forward_list have some algorithms as thire member function, 
- * which should be used rather than common algorithms
+ * which mast be used rather than common algorithms
  *
  * lst.merge(lst2):
  *	merge lst2 into lst, both lst and lst2 have to be ordered

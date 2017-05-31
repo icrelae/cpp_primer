@@ -8,6 +8,8 @@
  * c.pop_front() delete haed element; return void; if c is empty, behaviour undefined
  * c.erase(itPos) delete element pointed by itPos; return iterator pointed to next element; if itPos=c.end(), behaviour undefined
  * c.erase(itPosBeg, itPosEnd) delete elements from itPosBeg to itPosEnd(exclude itPosEnd); return iterator point to next element of itPosEnd
+ * c.remove([itBeg, itEnd, ]val) delete element equal to 'val'
+ * c.remove_if([itBeg, itEnd, ], op) delete if 'op' returns 'true'
  * c.clear() empty container, return void
  */
 #include <iostream>
