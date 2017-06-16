@@ -50,7 +50,7 @@ void AllocatorEG()
 	vector<int> vecInt{1, 2, 3, 4, 5};
 	allocator<int> alctInt;
 	int *pI = alctInt.allocate(vecInt.size() * 2);
-	int* pI1 = uninitialized_copy(vecInt.begin(), vecInt.end(), pI);
+	int *pI1 = uninitialized_copy(vecInt.begin(), vecInt.end(), pI);
 	pI1 = uninitialized_fill_n(pI1, vecInt.size(), -1);
 	while (pI1 != pI) {
 		cout << *(pI1-1) << ' ';

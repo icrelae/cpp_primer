@@ -9,17 +9,18 @@
 using namespace std;
 
 /* layer of 'exception' !!!
- * exception	--	bad_cast
- *		|_	runtime_error	--	overflow_error
- *		|			|_	underflow_error
- *		|			|_	range_error
- *		|
- *		|_	logic_error	--	domain_error
- *		|			|_	invalid_argument
- *		|			|_	out_of_range
- *		|			|_	length_error
- *		|
- *		|_	bad_alloc
+ * exception
+ * |_	bad_cast
+ * |_	runtime_error
+ * |	|_	overflow_error
+ * |	|_	underflow_error
+ * |	|_	range_error
+ * |_	logic_error
+ * |	|_	domain_error
+ * |	|_	invalid_argument
+ * |	|_	out_of_range
+ * |	|_	length_error
+ * |_	bad_alloc
  */
 
 class out_of_stock: public std::runtime_error {
