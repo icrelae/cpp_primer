@@ -10,7 +10,7 @@
  *		'p' have to be pointer returned by allocate()
  *		'n' have to be the number of allocate()
  *		user have to destroy every member of p befor deallocate()
- *	a.coustruct(p, args):
+ *	a.construct(p, args):
  *		'p' have to be a pointer typed 'T*', point to raw memory
  *	a.destroy(p):
  *		'p' is a pointer typed 'T*'

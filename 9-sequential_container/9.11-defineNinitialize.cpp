@@ -1,7 +1,7 @@
 /* 2016.11.15 21:19
  * P_301
  * !!!
- * define array: * array<int, 3> arr; !!!
+ * define array: array<int, 3> arr; !!!
  */
 #include <iostream>
 #include <vector>
