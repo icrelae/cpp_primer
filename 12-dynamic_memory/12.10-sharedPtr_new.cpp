@@ -24,7 +24,7 @@ void Process(shared_ptr<int> sptr)
 {
 	cout << sptr.use_count() << endl;
 }
-void Del1(int)
+void Del1(int*)
 {
 	cout << "del1" << endl;
 }
@@ -36,8 +36,12 @@ void Shared_ptrAndNewEG()
 {
 	// shared_ptr could be initialized using new !!!
 	// shared_ptr<T>(new T) is explicit !!!
+	// shared_ptr for dynamic array need specify deleter !!!
 	//shared_ptr<int> p1 = new int(1024);	// invalid
-	shared_ptr<int> p2(new int(1024));
+	shared_ptr<int> p2(new int[1024], [](int *p){delete[] p;});
+	shared_ptr<int> p3(new int[1024], default_delete<int[]>());
+	// unique_ptr can deal with dynamic array
+	unique_ptr<int> p4(new int[1024]);	// it's ok
 
 	shared_ptr<int> sptr = make_shared<int>(3);
 	// reset() will update reference count !!!

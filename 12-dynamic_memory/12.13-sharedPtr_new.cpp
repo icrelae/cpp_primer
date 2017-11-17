@@ -15,7 +15,7 @@ void Process(shared_ptr<int> sptr)
 
 int main(int argc, char **argv)
 {
-	auto sp = make_sahred<int>();
+	auto sp = make_shared<int>();
 	auto p = sp.get();
 	delete p;
 	// delete twice

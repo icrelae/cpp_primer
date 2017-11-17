@@ -24,6 +24,8 @@ void bitsetEG()
 	string str = "abaaabaa";
 	size_t size = 8;
 	bitset<8> b(str, 0, 3, 'a', 'b');
+	cout << b << endl;
+	// output: 00000010
 	for (auto x = 0; x < size; ++x)
 		cout << b[x] << ' ';
 	// output: 0 1 0 0 0 0 0 0 
